@@ -2,6 +2,7 @@ import express, { Express, Request, Response } from 'express';
 import dotenv from 'dotenv';
 import mongoose from 'mongoose'
 
+
 dotenv.config();
 
 const app = express();
@@ -14,13 +15,5 @@ app.get('/', (req, res) => {
 app.listen(port, () => {
   console.log(`⚡️[server]: Server is running at https://localhost:${port}`);
 });
- mongoose
-      .connect('mongodb://localhost:27017/flight-booking', {
-        useNewUrlParser: true,
-         useUnifiedTopology: true,
-        useCreateIndex: true,
-        useFindAndModify: false,
-      }, ()=>{
-        console.log('connected to database')
-      })
+
 
