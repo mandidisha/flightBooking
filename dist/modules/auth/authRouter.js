@@ -22,16 +22,12 @@ var __importStar = (this && this.__importStar) || function (mod) {
     __setModuleDefault(result, mod);
     return result;
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.BookingSchema = void 0;
-const mongoose_1 = __importStar(require("mongoose"));
-const dbTables_1 = __importDefault(require("../providers/dbTables"));
-exports.BookingSchema = new mongoose_1.Schema({
-    seatNr: { type: Number },
-    user: [{ type: mongoose_1.Schema.Types.ObjectId, ref: dbTables_1.default.USER }],
-    schedule: [{ type: mongoose_1.Schema.Types.ObjectId, ref: dbTables_1.default.SCHEDULE }],
-});
-exports.default = mongoose_1.default.model(dbTables_1.default.BOOKING, exports.BookingSchema);
+const express_1 = require("express");
+const controller = __importStar(require("./authController"));
+const router = (0, express_1.Router)();
+const BASE_ROUTE = 'localhost:8000/auth';
+router.route(`${BASE_ROUTE}/register`).post(controller.registerUser);
+router.route(`${BASE_ROUTE}/resend-confirmation-email`).post(controller.resendConfirmationEmail);
+router.route(`${BASE_ROUTE}/confirmation`).put(controller.confirmAccount);
+router.route(`${BASE_ROUTE}/login`).post(controller.logIn);

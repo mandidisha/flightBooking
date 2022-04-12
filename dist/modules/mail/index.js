@@ -26,12 +26,16 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.BookingSchema = void 0;
-const mongoose_1 = __importStar(require("mongoose"));
-const dbTables_1 = __importDefault(require("../providers/dbTables"));
-exports.BookingSchema = new mongoose_1.Schema({
-    seatNr: { type: Number },
-    user: [{ type: mongoose_1.Schema.Types.ObjectId, ref: dbTables_1.default.USER }],
-    schedule: [{ type: mongoose_1.Schema.Types.ObjectId, ref: dbTables_1.default.SCHEDULE }],
-});
-exports.default = mongoose_1.default.model(dbTables_1.default.BOOKING, exports.BookingSchema);
+const sendgridDriver = __importStar(require("./sendgrid"));
+const development_1 = __importDefault(require("../providers/development"));
+// eslint-disable-next-line import/no-mutable-exports
+let mailService = null;
+switch (development_1.default.mailService) {
+    case 'sendgrid':
+        mailService = sendgridDriver;
+        break;
+    default:
+        mailService = sendgridDriver;
+        break;
+}
+exports.default = mailService;

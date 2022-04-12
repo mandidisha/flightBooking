@@ -1,13 +1,14 @@
 import mongoose, { Schema, Document } from 'mongoose';
 import dbTables from '../providers/dbTables';
 
-export interface ISecret extends Document{
-  otpauth_url:string;
-  base32:string;
-  hex:string;
-  ascii:string;
+export interface ISecret extends Document {
+  otpauth_url: string;
+  base32: string;
+  hex: string;
+  ascii: string;
 }
 export interface IUser extends Document {
+  redirectUrl: string;
 
   email: string;
   password: string;
@@ -18,7 +19,22 @@ export interface IUser extends Document {
   twoFactorAuth: boolean;
   isAdmin: boolean;
   gender: string;
+  confirmationToken: boolean;
+  confirmationLevel: number;
   secret: ISecret;
+}
+
+export interface IRegistration extends Document {
+  email: string;
+  password: string;
+  firstName: string;
+  lastName: string;
+  confirmantionToken: boolean;
+  confirmationLevel: number;
+  isAdmin: boolean;
+  twoFactorAuth: boolean;
+  redirectUrl: string;
+  token: string;
 }
 
 export const UserSchema: Schema = new Schema(
@@ -32,6 +48,8 @@ export const UserSchema: Schema = new Schema(
     twoFactorAuth: { type: Boolean },
     isAdmin: { type: Boolean, required: true },
     gender: { type: String, required: true },
+    confirmationToken: { type: Boolean, required: true },
+    confirmationLevel: { type: Number, required: true },
     secret: {
       type: {
         ascii: { type: 'String' },
