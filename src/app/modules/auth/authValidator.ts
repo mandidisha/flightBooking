@@ -1,6 +1,6 @@
 import Joi from 'joi';
-import { IRegistration, IUser } from '../models/User';
-import { passwordRegex } from '../providers/validation';
+import { IRegistration, IUser } from '../../models/User';
+import { passwordRegex } from '../../providers/validation';
 
 export const validateUserSignUpRequest = (input: IRegistration) => {
   const schema = Joi.object().keys({

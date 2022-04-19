@@ -1,5 +1,5 @@
 import * as sendgridDriver from './sendgrid';
-import config from '../providers/development';
+import config from '../development';
 
 // eslint-disable-next-line import/no-mutable-exports
 let mailService = null;

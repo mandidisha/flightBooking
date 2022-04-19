@@ -1,6 +1,6 @@
 import Sendgrid from '@sendgrid/mail';
 
-import config from '../providers/development';
+import config from '../development';
 
 Sendgrid.setApiKey(config.mailServiceApiKey as string);
 

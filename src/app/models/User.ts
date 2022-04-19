@@ -1,40 +1,64 @@
 import mongoose, { Schema, Document } from 'mongoose';
 import dbTables from '../providers/dbTables';
 
-export interface ISecret extends Document {
+export interface ISecret {
   otpauth_url: string;
   base32: string;
   hex: string;
   ascii: string;
 }
-export interface IUser extends Document {
-  redirectUrl: string;
 
+export interface ITwoFactor {
+  active: boolean;
+  secret?: ISecret;
+}
+export interface IUser extends Document {
   email: string;
   password: string;
   passwordResetToken: string;
   passwordResetExpires: Date;
   firstName: string;
   lastName: string;
-  twoFactorAuth: boolean;
+  twoFactorAuth: ITwoFactor;
   isAdmin: boolean;
   gender: string;
   confirmationToken: boolean;
   confirmationLevel: number;
-  secret: ISecret;
+  secret: string;
 }
 
-export interface IRegistration extends Document {
+export interface IRegistration {
   email: string;
   password: string;
   firstName: string;
   lastName: string;
-  confirmantionToken: boolean;
+  confirmationToken: string;
   confirmationLevel: number;
   isAdmin: boolean;
   twoFactorAuth: boolean;
   redirectUrl: string;
   token: string;
+}
+// create
+// updateUser
+// costum types for update and create
+
+export interface IUpdate {
+  email?: string;
+  password?: string;
+  firstName?: string;
+  lastName?: string;
+  gender?: string;
+  confirmationToken?: string;
+  confirmationLevel?: number;
+  twoFactorAuth?: ITwoFactor;
+}
+
+export interface IQuery extends Document {
+  email: string;
+  firstName: string;
+  lastName: string;
+  gender: string;
 }
 
 export const UserSchema: Schema = new Schema(
@@ -45,7 +69,19 @@ export const UserSchema: Schema = new Schema(
     passwordResetExpires: { type: Date },
     firstName: { type: String, required: true },
     lastName: { type: String, required: true },
-    twoFactorAuth: { type: Boolean },
+    twoFactorAuth: {
+      type: {
+        active: { type: Boolean },
+        secret: {
+          type: {
+            ascii: { type: 'String' },
+            hex: { type: 'String' },
+            base32: { type: 'String' },
+            otpauth_url: { type: 'String' },
+          },
+        },
+      },
+    },
     isAdmin: { type: Boolean, required: true },
     gender: { type: String, required: true },
     confirmationToken: { type: Boolean, required: true },
@@ -59,7 +95,6 @@ export const UserSchema: Schema = new Schema(
       },
       required: false,
     },
-
   },
   {
     timestamps: true,

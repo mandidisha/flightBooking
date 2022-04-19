@@ -6,4 +6,6 @@ export default {
   mailServiceApiKey: process.env.MAIL_SERVICE_API_KEY,
   mailService: 'sendgrid',
   mailServiceSender: process.env.MAIL_SERVICE_SENDER,
+  apiDocsUsername: 'FlightBooking',
+  apiDocsPassword: process.env.PASSWORD,
 };

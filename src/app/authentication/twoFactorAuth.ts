@@ -1,6 +1,6 @@
 import SpeakEasy from 'speakeasy';
 import QRCode from 'qrcode';
-import { ISecret } from '../modules/models/User';
+import { ISecret } from '../models/User';
 
 /**
  * Generates a unique secret key for each user.
@@ -18,7 +18,7 @@ export const generateSecret = (userEmail: String) => SpeakEasy.generateSecret({
  * @param {String} secret
  */
 
-export const generateQRCode = (secret:ISecret) => new Promise((resolve, reject) => {
+export const generateQRCode = (secret:any) => new Promise((resolve, reject) => {
   QRCode.toDataURL(secret.otpauth_url, (err, imageData) => {
     if (err) {
       reject(err);

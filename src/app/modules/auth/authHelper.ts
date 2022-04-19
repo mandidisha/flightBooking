@@ -1,8 +1,8 @@
 import Path from 'path';
 import Ejs from 'ejs';
 import InlineCss from 'inline-css';
-import { sendEmail } from '../mail/sendgrid';
-import { getRedirectUrl } from '../helpers/urlUtils';
+import { sendEmail } from '../../providers/mail/sendgrid';
+import { getRedirectUrl } from '../../helpers/urlUtils';
 // eslint-disable-next-line import/prefer-default-export
 export const sendConfirmationEmail = async ({ user, redirectUrl }:any) => {
   const confirmationURL = getRedirectUrl(redirectUrl, `token=${user.confirmationToken}`);

@@ -7,4 +7,6 @@ export default {
   INVALID_2FA_TOKEN: 'The provided token is not valid',
   NO_2FA: 'Two-factor authentication is not enabled for your account',
   AUTHOR_EXISTS: 'An author with the same name already exists',
+  AUTH_USER_NOT_FOUND: 'User not found',
+  AUTH_INVALID_2FA_TOKEN: 'Invalid token',
 };

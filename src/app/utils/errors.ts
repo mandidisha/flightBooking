@@ -78,3 +78,15 @@ export class NotFound extends GeneralError {
     );
   }
 }
+
+export class UnprocessableEntity extends GeneralError {
+  constructor(details: any, logOnly?:any) {
+    super(
+      422,
+      'Unprocessable Entity',
+      'Your request was understood but could not be completed due to semantic errors',
+      details,
+      logOnly,
+    );
+  }
+}
