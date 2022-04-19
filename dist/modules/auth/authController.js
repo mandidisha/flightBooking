@@ -22,16 +22,46 @@ var __importStar = (this && this.__importStar) || function (mod) {
     __setModuleDefault(result, mod);
     return result;
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.BookingSchema = void 0;
-const mongoose_1 = __importStar(require("mongoose"));
-const dbTables_1 = __importDefault(require("../providers/dbTables"));
-exports.BookingSchema = new mongoose_1.Schema({
-    seatNr: { type: Number },
-    user: [{ type: mongoose_1.Schema.Types.ObjectId, ref: dbTables_1.default.USER }],
-    schedule: [{ type: mongoose_1.Schema.Types.ObjectId, ref: dbTables_1.default.SCHEDULE }],
-});
-exports.default = mongoose_1.default.model(dbTables_1.default.BOOKING, exports.BookingSchema);
+exports.logIn = exports.confirmAccount = exports.resendConfirmationEmail = exports.registerUser = void 0;
+// import RequestWithUser from '../models/RequestWithUser';
+const service = __importStar(require("./authService"));
+const registerUser = async (req, res, next) => {
+    try {
+        await service.registerUser(req.body);
+    }
+    catch (e) {
+        next(e);
+    }
+};
+exports.registerUser = registerUser;
+const resendConfirmationEmail = async (req, res, next) => {
+    try {
+        await service.resendConfirmationEmail(req.body);
+        res.sendStatus(204);
+    }
+    catch (e) {
+        next(e);
+    }
+};
+exports.resendConfirmationEmail = resendConfirmationEmail;
+const confirmAccount = async (req, res, next) => {
+    try {
+        await service.confirmAccount(req.body);
+        res.sendStatus(204);
+    }
+    catch (e) {
+        next(e);
+    }
+};
+exports.confirmAccount = confirmAccount;
+const logIn = async (req, res, next) => {
+    try {
+        await service.logIn(req.body);
+        res.sendStatus(204);
+    }
+    catch (e) {
+        next(e);
+    }
+};
+exports.logIn = logIn;

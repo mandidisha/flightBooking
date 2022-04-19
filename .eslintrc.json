@@ -26,11 +26,13 @@
         "error",
         "ignorePackages",
         {
+          "import/prefer-default-export": "off",
           "js": "never",
           "jsx": "never",
           "ts": "never",
           "tsx": "never"
         }
-     ]
+      ],
+      "no-underscore-dangle": "off"
     }
 }
