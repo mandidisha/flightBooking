@@ -60,6 +60,12 @@ export interface IQuery extends Document {
   lastName: string;
   gender: string;
 }
+export interface IProfile {
+  email: string;
+  firstName: string;
+  lastName: string;
+  gender: string;
+}
 
 export const UserSchema: Schema = new Schema(
   {
@@ -98,6 +104,7 @@ export const UserSchema: Schema = new Schema(
   },
   {
     timestamps: true,
+    collection: dbTables.USER,
   },
 );
 

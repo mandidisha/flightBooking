@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import { authenticated } from '../../authentication/jwt';
-import * as controller from './authController';
+import * as controller from '../auth/authController';
 
 const router = Router();
 const BASE_ROUTE = 'localhost:8000/auth';

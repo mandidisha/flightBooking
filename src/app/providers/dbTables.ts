@@ -4,4 +4,5 @@ export default {
   AIRPORT: 'Airport',
   SCHEDULE: 'Schedule',
   BOOKING: 'Booking',
+  PROFILE: 'Profile',
 };

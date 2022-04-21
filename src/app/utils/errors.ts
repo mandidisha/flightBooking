@@ -67,6 +67,18 @@ export class NotAuthenticated extends GeneralError {
   }
 }
 
+export class BadRequest extends GeneralError {
+  constructor(details: any, logOnly: any) {
+    super(
+      400,
+      'Bad Request',
+      'Your request contains invalid or missing data',
+      details,
+      logOnly,
+    );
+  }
+}
+
 export class NotFound extends GeneralError {
   constructor(details:any, logOnly?:any) {
     super(
@@ -79,6 +91,17 @@ export class NotFound extends GeneralError {
   }
 }
 
+export class NotAuthorized extends GeneralError {
+  constructor(details: string, logOnly: any) {
+    super(
+      403,
+      'Not Authorized / Forbidden',
+      'Your request cannot be completed due to missing permissions',
+      details,
+      logOnly,
+    );
+  }
+}
 export class UnprocessableEntity extends GeneralError {
   constructor(details: any, logOnly?:any) {
     super(
