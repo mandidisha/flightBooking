@@ -1,10 +1,33 @@
-import { Router } from 'express';
-import { authenticated } from '../../authentication/jwt';
-import * as controller from './airplaneController';
-
-const router = Router();
+"use strict";
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = require("express");
+const jwt_1 = require("../../authentication/jwt");
+const controller = __importStar(require("./airplaneController"));
+const router = (0, express_1.Router)();
 const BASE_ROUTE = '/airplane';
-
 /**
  * Create airplane.
  *
@@ -34,7 +57,6 @@ const BASE_ROUTE = '/airplane';
  *                   type: string
  *                 city:
  *                   type: number
-
  *       responses:
  *         201:
  *           description: Airplane created successfully.
@@ -51,12 +73,7 @@ const BASE_ROUTE = '/airplane';
  *         500:
  *           $ref: "#/components/responses/500"
  */
-
-router.route(BASE_ROUTE).post(
-  authenticated(),
-  controller.createAirplane,
-);
-
+router.route(BASE_ROUTE).post((0, jwt_1.authenticated)(), controller.createAirplane);
 /**
  * Update airplane.
  *
@@ -107,11 +124,7 @@ router.route(BASE_ROUTE).post(
  *         500:
  *           $ref: "#/components/responses/500"
  */
-router.route(`${BASE_ROUTE}/:id`).patch(
-  authenticated(),
-  controller.updateAirplane,
-);
-
+router.route(`${BASE_ROUTE}/:id`).patch((0, jwt_1.authenticated)(), controller.updateAirplane);
 /**
  * Read airplane.
  *
@@ -149,12 +162,7 @@ router.route(`${BASE_ROUTE}/:id`).patch(
  *         500:
  *           $ref: "#/components/responses/500"
  */
-
-router.route(`${BASE_ROUTE}/:id`).get(
-  authenticated(),
-  controller.getAirplane,
-);
-
+router.route(`${BASE_ROUTE}/:id`).get((0, jwt_1.authenticated)(), controller.getAirplane);
 /**
  * Read airplanes.
  *
@@ -195,12 +203,7 @@ router.route(`${BASE_ROUTE}/:id`).get(
  *         500:
  *           $ref: "#/components/responses/500"
  */
-
-router.route(`${BASE_ROUTE}/airplanes`).get(
-  authenticated(),
-  controller.getAirplanes,
-);
-
+router.route(`${BASE_ROUTE}/airplanes`).get((0, jwt_1.authenticated)(), controller.getAirplanes);
 /**
  * Delete airplane.
  *
@@ -234,7 +237,4 @@ router.route(`${BASE_ROUTE}/airplanes`).get(
  *         500:
  *           $ref: "#/components/responses/500"
  */
-router.route(`${BASE_ROUTE}/:id`).delete(
-  authenticated(),
-  controller.removeAirplane,
-);
+router.route(`${BASE_ROUTE}/:id`).delete((0, jwt_1.authenticated)(), controller.removeAirplane);

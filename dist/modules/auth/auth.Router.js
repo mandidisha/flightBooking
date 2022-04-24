@@ -1,8 +1,33 @@
-import { Router } from 'express';
-import { authenticated } from '../../authentication/jwt';
-import * as controller from '../auth/authController';
-
-const router = Router();
+"use strict";
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+/* eslint-disable max-len */
+const express_1 = require("express");
+const jwt_1 = require("../../authentication/jwt");
+const controller = __importStar(require("./authController"));
+const router = (0, express_1.Router)();
 const BASE_ROUTE = 'localhost:8000/auth';
 /**
  * User registration.
@@ -62,10 +87,8 @@ const BASE_ROUTE = 'localhost:8000/auth';
  *         500:
  *           $ref: "#/components/responses/500"
  */
-router.route(`${BASE_ROUTE}/register`).post(
-  controller.registerUser,
-);
-
+// eslint-disable-next-line no-template-curly-in-string
+router.route('${BASE_ROUTE}/register').post(controller.registerUser);
 /**
  * Resend confirmation email.
  *
@@ -114,10 +137,7 @@ router.route(`${BASE_ROUTE}/register`).post(
  *         500:
  *           $ref: "#/components/responses/500"
  */
-router.route(`${BASE_ROUTE}/resend-confirmation-email`).post(
-  controller.resendConfirmationEmail,
-);
-
+router.route(`${BASE_ROUTE}/resend-confirmation-email`).post(controller.resendConfirmationEmail);
 /**
  * Account confirmation.
  *
@@ -159,10 +179,7 @@ router.route(`${BASE_ROUTE}/resend-confirmation-email`).post(
  *         500:
  *           $ref: "#/components/responses/500"
  */
-router.route(`${BASE_ROUTE}/confirmation`).put(
-  controller.confirmAccount,
-);
-
+router.route(`${BASE_ROUTE}/confirmation`).put(controller.confirmAccount);
 /**
  * User log in.
  *
@@ -234,10 +251,7 @@ router.route(`${BASE_ROUTE}/confirmation`).put(
  *         500:
  *           $ref: "#/components/responses/500"
  */
-router.route(`${BASE_ROUTE}/login`).post(
-  controller.logIn,
-);
-
+router.route(`${BASE_ROUTE}/login`).post(controller.logIn);
 /**
  * Request new password.
  *
@@ -281,11 +295,7 @@ router.route(`${BASE_ROUTE}/login`).post(
  *         500:
  *           $ref: "#/components/responses/500"
  */
-
-router.route(`${BASE_ROUTE}/request-new-password`).post(
-  controller.requestNewPassword,
-);
-
+router.route(`${BASE_ROUTE}/request-new-password`).post(controller.requestNewPassword);
 /**
  * Reset password.
  *
@@ -328,11 +338,7 @@ router.route(`${BASE_ROUTE}/request-new-password`).post(
  *         500:
  *           $ref: "#/components/responses/500"
  */
-
-router.route(`${BASE_ROUTE}/password`).post(
-  controller.resetPassword,
-);
-
+router.route(`${BASE_ROUTE}/password`).post(controller.resetPassword);
 /**
  * Initialize two factor authentication.
  *
@@ -371,12 +377,7 @@ router.route(`${BASE_ROUTE}/password`).post(
  *         500:
  *           $ref: "#/components/responses/500"
  */
-
-router.route(`${BASE_ROUTE}/two-factor-auth/initialization`).put(
-  authenticated(),
-  controller.initTwoFactorAuthentication,
-);
-
+router.route(`${BASE_ROUTE}/two-factor-auth/initialization`).put((0, jwt_1.authenticated)(), controller.initTwoFactorAuthentication);
 /**
  * Finalize the setup for the two factor authentication.
  *
@@ -390,8 +391,7 @@ router.route(`${BASE_ROUTE}/two-factor-auth/initialization`).put(
  *       tags:
  *         - Authentication
  *       summary: Activate two-factor authentication
- *       description: Receives a token from the user and validates it.
- * If the token is valid, the two-factor authentication becomes active.
+ *       description: Receives a token from the user and validates it. If the token is valid, the two-factor authentication becomes active.
  *       requestBody:
  *         content:
  *           application/json:
@@ -444,11 +444,7 @@ router.route(`${BASE_ROUTE}/two-factor-auth/initialization`).put(
  *         500:
  *           $ref: "#/components/responses/500"
  */
-router.route(`${BASE_ROUTE}/two-factor-auth/activation`).put(
-  authenticated(),
-  controller.completeTwoFactorAuthentication,
-);
-
+router.route(`${BASE_ROUTE}/two-factor-auth/activation`).put((0, jwt_1.authenticated)(), controller.completeTwoFactorAuthentication);
 /**
  * Verify two factor authentication token.
  *
@@ -485,9 +481,5 @@ router.route(`${BASE_ROUTE}/two-factor-auth/activation`).put(
  *         500:
  *           description: Internal Server Error
  */
-router.route(`${BASE_ROUTE}/two-factor-auth/verification`).head(
-  authenticated(),
-  controller.verifyTwoFactorAuthToken,
-);
-
-export default router;
+router.route(`${BASE_ROUTE}/two-factor-auth/verification`).head((0, jwt_1.authenticated)(), controller.verifyTwoFactorAuthToken);
+exports.default = router;

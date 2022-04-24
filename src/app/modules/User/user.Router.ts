@@ -103,6 +103,7 @@ router.route(`${BASE_ROUTE}/:id`).get(
  *                   value:
  *                     code: ckgjkxvgl000431pp4xlpew2g
  *                     name: Unprocessable Entity
+eslint-disable-next-line max-len
  *                     message: Your request was understood but could not be completed due to semantic errors
  *                     details: An user with the same name already exists
  *                   summary: User exists
@@ -164,3 +165,6 @@ router.route(`${BASE_ROUTE}/userList`).get(
   authenticated(),
   controller.getUserList,
 );
+
+// eslint-disable-next-line import/prefer-default-export
+export const userRouter = router;

@@ -23,8 +23,7 @@ var __importStar = (this && this.__importStar) || function (mod) {
     return result;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.logIn = exports.confirmAccount = exports.resendConfirmationEmail = exports.registerUser = void 0;
-// import RequestWithUser from '../models/RequestWithUser';
+exports.verifyTwoFactorAuthToken = exports.completeTwoFactorAuthentication = exports.initTwoFactorAuthentication = exports.resetPassword = exports.requestNewPassword = exports.logIn = exports.confirmAccount = exports.resendConfirmationEmail = exports.registerUser = void 0;
 const service = __importStar(require("./authService"));
 const registerUser = async (req, res, next) => {
     try {
@@ -65,3 +64,57 @@ const logIn = async (req, res, next) => {
     }
 };
 exports.logIn = logIn;
+const requestNewPassword = async (req, res, next) => {
+    try {
+        await service.requestNewPassword(req.body);
+        res.sendStatus(204);
+    }
+    catch (e) {
+        next(e);
+    }
+};
+exports.requestNewPassword = requestNewPassword;
+const resetPassword = async (req, res, next) => {
+    try {
+        await service.resetPassword(req.body);
+        res.sendStatus(204);
+    }
+    catch (e) {
+        next(e);
+    }
+};
+exports.resetPassword = resetPassword;
+const initTwoFactorAuthentication = async (req, res, next) => {
+    try {
+        const result = await service.initTwoFactorAuthentication(req.user._id);
+        res.status(200).send(result);
+    }
+    catch (e) {
+        next(e);
+    }
+};
+exports.initTwoFactorAuthentication = initTwoFactorAuthentication;
+const completeTwoFactorAuthentication = async (req, res, next) => {
+    try {
+        await service.completeTwoFactorAuthentication(
+        // eslint-disable-next-line no-underscore-dangle
+        req.body._id, req.body);
+        res.sendStatus(200);
+    }
+    catch (e) {
+        next(e);
+    }
+};
+exports.completeTwoFactorAuthentication = completeTwoFactorAuthentication;
+const verifyTwoFactorAuthToken = async (req, res, next) => {
+    try {
+        await service.completeTwoFactorAuthentication(
+        // eslint-disable-next-line no-underscore-dangle
+        req.body._id, req.body);
+        res.sendStatus(200);
+    }
+    catch (e) {
+        next(e);
+    }
+};
+exports.verifyTwoFactorAuthToken = verifyTwoFactorAuthToken;

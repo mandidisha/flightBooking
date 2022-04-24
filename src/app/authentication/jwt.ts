@@ -1,5 +1,4 @@
 import Jwt from 'jsonwebtoken';
-
 import { NextFunction, Response, Request } from 'express';
 import { boolean } from 'joi';
 import config from '../providers/development';

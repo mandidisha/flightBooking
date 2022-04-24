@@ -8,6 +8,10 @@ export const createAirport = async (
   res: express.Response,
   next: express.NextFunction,
 ) => {
+  const existing = await Airport.find({ airportName: req.body.airportName });
+  if (existing) {
+    throw new Error('Airport exsist');
+  }
   const airport: IAirport = await Airport.create({
     airportName: req.body.airportName,
     country: req.body.country,
@@ -57,6 +61,9 @@ export const getAirports = async (
   next: express.NextFunction,
 ) => {
   const airports = await Airport.find({});
+  if (!airports) {
+    throw new Error('airports not found');
+  }
   try {
     res.send(airports);
   } catch (e) {
@@ -70,6 +77,9 @@ export const getAirport = async (
   next: express.NextFunction,
 ) => {
   const airport = await Airport.findById(req.body._id);
+  if (!airport) {
+    throw new Error('airport not found');
+  }
   try {
     res.send(airport);
   } catch (e) {

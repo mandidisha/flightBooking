@@ -1,3 +1,4 @@
+/* eslint-disable quotes */
 import bodyParser from 'body-parser';
 import Path from 'path';
 import YAML from 'yamljs';
@@ -6,25 +7,28 @@ import SwaggerJsdoc from 'swagger-jsdoc';
 import express from 'express';
 import mongoose from 'mongoose';
 import Http from 'http';
-import { basicAuth, jwtAuth } from './authentication';
-import routes from './modules/routes';
+import routes from './routes';
+// import swaggerUi from 'swagger-ui-express';
+// import { jwtAuth } from './authentication';
 import config from './providers/development';
+// import Airplanes from './models/Airplanes';
+// import Airport from './models/Airport';
 
 const app = express();
 // const port = 8000
 const server = Http.createServer(app);
-
 mongoose.connect(config.databaseUrl, {
   directConnection: true,
 });
 
-app.get('/', (req: express.Request, res: express.Response) => {
-  res.send(req.body);
+app.get('/first', (req: express.Request, res: express.Response) => {
+  res.send('COnnnected');
 });
-app.use(express.json);
-app.use('api/v1', routes);
-// Setup docs
-const docsFilePath = Path.resolve(__dirname, './docs/openapi.yaml');
+app.get('/help', (req: express.Request, res: express.Response) => {
+  res.send('help page');
+});
+
+const docsFilePath = Path.resolve(__dirname, '../src/docs/openapi.yaml');
 const jsonDocsFile = YAML.load(docsFilePath);
 const docs = SwaggerJsdoc({
   swaggerDefinition: jsonDocsFile,
@@ -37,12 +41,11 @@ app.use(
   SwaggerUI.serve,
   SwaggerUI.setup(docs),
 );
+app.use('/api/v1', routes);
 
-app.get('/help', (req: express.Request, res: express.Response) => {
-  res.send('help page');
-});
+app.use(express.json);
 
-jwtAuth();
+// jwtAuth();
 app.use(bodyParser.json());
 
 server.listen(config.port, () => console.log(`app running on port ${config.port}`));

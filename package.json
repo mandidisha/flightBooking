@@ -2,7 +2,7 @@
   "name": "flight-booking",
   "version": "1.0.0",
   "description": "",
-  "main": "index.ts",
+  "main": "dist/app.js",
   "scripts": {
     "format:check": "prettier --check .",
     "swagger": "tsoa spec",
@@ -11,7 +11,7 @@
     "lint:fix": "eslint ./src/**/*.ts --fix ",
     "build": "npx tsc",
     "start": "node dist/app.js",
-    "dev": "concurrently \"npx tsc --watch\" \"nodemon -q dist/app.ts\""
+    "dev": "concurrently \"npx tsc --watch\" \"nodemon -q app.ts\""
   },
   "keywords": [],
   "author": "",
