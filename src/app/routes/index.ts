@@ -1,29 +1,20 @@
 /* eslint-disable global-require */
 /* eslint-disable import/no-dynamic-require */
-import { Router } from 'express';
-import Path from 'path';
-import { readdirSync, lstatSync } from 'fs';
+import Router from 'express';
+import userRouter from '../modules/User/user.Router';
+import { airplaneRouter } from '../modules/Airplane/airplane.Router';
+import { airportRouter } from '../modules/Airport/airport.Router';
+import authRouter from '../modules/auth/auth.Router';
+import { bookingRouter } from '../modules/Booking/booking.Router';
+import { scheduleRouter } from '../modules/Schedule/schedule.Router';
 
 const router = Router();
 
-/**
- * Read all routers from the '/modules' directory.
- */
-
-const modulesDirContent = readdirSync(Path.join(__dirname, '../modules'));
-
-modulesDirContent.forEach((item) => {
-  const currentItemPath = Path.join(__dirname, `../modules/${item}`);
-  const isDirectory = lstatSync(currentItemPath).isDirectory();
-
-  if (isDirectory) {
-    const routerFilePath = Path.join(__dirname, `../modules/${item}/${item}.Router.js`);
-    const module = require(routerFilePath);
-
-    if (module && module.default) {
-      router.use(module.default);
-    }
-  }
-});
+// router.use(userRouter);
+// router.use(airplaneRouter);
+// router.use(airportRouter);
+router.use(authRouter);
+// router.use(bookingRouter);
+// router.use(scheduleRouter);
 
 export default router;

@@ -6,6 +6,7 @@ export const registerUser = async (
   res: express.Response,
   next: express.NextFunction,
 ) => {
+  console.log('register  boyd', req.body);
   try {
     await service.registerUser(req.body);
   } catch (e) {

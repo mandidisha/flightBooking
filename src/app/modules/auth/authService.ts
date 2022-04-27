@@ -15,6 +15,7 @@ import { createToken } from '../../authentication/jwt';
 import { NotAuthenticated, NotFound, UnprocessableEntity } from '../../utils/errors';
 
 export const registerUser = async (requestBody: IRegistration) => {
+  console.log('here');
   validator.validateUserSignUpRequest(requestBody);
   const query = {
     email: requestBody.email.toLowerCase(),

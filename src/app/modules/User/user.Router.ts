@@ -167,4 +167,4 @@ router.route(`${BASE_ROUTE}/userList`).get(
 );
 
 // eslint-disable-next-line import/prefer-default-export
-export const userRouter = router;
+export default router;

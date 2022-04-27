@@ -1,3 +1,4 @@
+/* eslint-disable import/prefer-default-export */
 import { Router } from 'express';
 import { authenticated } from '../../authentication/jwt';
 import * as controller from './bookingController';
@@ -104,7 +105,7 @@ router.route(`${BASE_ROUTE}/bookings`).get(
 );
 
 /**
- * Read airport.
+ * Read booking.
  *
  * @openapi
  *
@@ -114,7 +115,7 @@ router.route(`${BASE_ROUTE}/bookings`).get(
  *       security:
  *         - bearerAuth: []
  *       tags:
- *         - Airport
+ *         - Booking
  *       summary: Read Booking
  *       description: Reads booking.
  *           parameters:
@@ -144,3 +145,5 @@ router.route(`${BASE_ROUTE}/:id`).get(
   authenticated(),
   controller.getBooking,
 );
+
+export const bookingRouter = router;

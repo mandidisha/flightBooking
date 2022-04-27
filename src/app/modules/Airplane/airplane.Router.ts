@@ -1,3 +1,4 @@
+/* eslint-disable import/prefer-default-export */
 import { Router } from 'express';
 import { authenticated } from '../../authentication/jwt';
 import * as controller from './airplaneController';
@@ -124,7 +125,6 @@ router.route(`${BASE_ROUTE}/:id`).patch(
  *       tags:
  *         - Airplane
  *       summary: Read airplane
- *       description: Reads airplane. Supports search by genre and projected responses.
  *           parameters:
  *         - name: id
  *           in: path
@@ -237,3 +237,5 @@ router.route(`${BASE_ROUTE}/:id`).delete(
   authenticated(),
   controller.removeAirplane,
 );
+
+export const airplaneRouter = router;

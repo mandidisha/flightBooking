@@ -3,7 +3,14 @@ import * as express from 'express';
 import User from '../../models/User';
 import * as service from './userService';
 import * as authorization from '../../providers/mail/userAuthorization';
-
+// type CustomRequest = {
+//   user: {
+//     _id: string;
+//     isAdimin: boolean;
+//     isConfermed: boolean;
+//     token: string;
+//   }
+// }
 export const getUser = async (
   req: express.Request,
   res: express.Response,

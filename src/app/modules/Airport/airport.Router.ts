@@ -1,3 +1,4 @@
+/* eslint-disable import/prefer-default-export */
 import { Router } from 'express';
 import { authenticated } from '../../authentication/jwt';
 import * as controller from './airportController';
@@ -209,7 +210,7 @@ router.route(`${BASE_ROUTE}/airports`).get(
  *         - Airport
  *       summary: Read Airport
  *       description: Reads airport.
- *           parameters:
+ *       parameters:
  *         - name: id
  *           in: path
  *           description: Airport Id
@@ -236,3 +237,5 @@ router.route(`${BASE_ROUTE}/:id`).get(
   authenticated(),
   controller.getAirport,
 );
+
+export const airportRouter = router;

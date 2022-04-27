@@ -1,3 +1,4 @@
+/* eslint-disable import/prefer-default-export */
 import { Router } from 'express';
 import { authenticated } from '../../authentication/jwt';
 import * as controller from './scheduleController';
@@ -253,3 +254,5 @@ router.route(`${BASE_ROUTE}/:id`).get(
   authenticated(),
   controller.getSchedule,
 );
+
+export const scheduleRouter = router;
