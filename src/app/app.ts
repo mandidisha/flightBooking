@@ -17,33 +17,25 @@ const app = express();
 mongoose.connect(config.databaseUrl, {
   directConnection: true,
 });
-app.use(express.json);
+app.use(express.json());
 app.use(express.urlencoded({ limit: '10mb', extended: false }));
 app.use(Cors());
 authenticated();
 app.use(bodyParser.json());
-// app.use(userRouter, airplaneRouter, airportRouter, authRouter, bookingRouter, scheduleRouter);
-
-app.get('/first', (req: express.Request, res: express.Response) => {
-  res.send('COnnnected');
-});
 
 app.use('/api', router);
-// app.get('/help', (req: express.Request, res: express.Response) => {
-//   res.send('help page');
-// });
 
-// const docsFilePath = Path.resolve(__dirname, '../docs/openapi.yaml');
-// const jsonDocsFile = YAML.load(docsFilePath);
-// const docs = SwaggerJsdoc({
-//   swaggerDefinition: jsonDocsFile,
-//   apis: ['./src/app/**/*.ts'],
-// });
-// app.use(
-//   '/api/swagger',
-//   SwaggerUI.serve,
-//   SwaggerUI.setup(docs),
-// );
+const docsFilePath = Path.resolve(__dirname, '../docs/openapi.yaml');
+const jsonDocsFile = YAML.load(docsFilePath);
+const docs = SwaggerJsdoc({
+  swaggerDefinition: jsonDocsFile,
+  apis: ['./src/app/**/*.ts'],
+});
+app.use(
+  '/api/swagger',
+  SwaggerUI.serve,
+  SwaggerUI.setup(docs),
+);
 // Catch all unhandled errors and log them
 process.on('unhandledRejection', (reason) => {
   throw reason;

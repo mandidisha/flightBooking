@@ -17,7 +17,7 @@ Chai.use(ChaiHTTP);
 
 describe('Test "Auth" endpoints', () => {
   const email = Faker.internet.email();
-  let confirmationToken: boolean;
+  let confirmationToken: string | undefined;
   const password = 'Ran@0m?pass';
   let userToken: any;
   let twoStepAuthSecretKey: any;
@@ -111,7 +111,7 @@ describe('Test "Auth" endpoints', () => {
 
   it('Test "PUT /auth/confirmation" (Success test case)', async () => {
     const user = await dal.findUser({ query: { email: email.toLowerCase() } });
-    confirmationToken = user!.confirmationToken;
+    confirmationToken = user?.confirmationToken;
 
     const response = await Chai.request(server)
       .put(`/auth/confirmation?token=${confirmationToken}`);

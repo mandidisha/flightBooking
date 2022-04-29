@@ -7,7 +7,7 @@ const router = Router();
 const BASE_ROUTE = '/schedule';
 
 /**
- * Create airport.
+ * Create schedule.
  *
  * @openapi
  *
@@ -62,7 +62,7 @@ const BASE_ROUTE = '/schedule';
  */
 router.route(BASE_ROUTE).post(
   authenticated(),
-  controller.createAirport,
+  controller.createSchedule,
 );
 
 /**
@@ -90,7 +90,7 @@ router.route(BASE_ROUTE).post(
  *         content:
  *           application/json:
  *             schema:
- *        required:
+ *               required:
  *                 - scheduleNr
  *                 - departureTime
  *                 - arrivalTime
@@ -126,7 +126,7 @@ router.route(BASE_ROUTE).post(
  */
 router.route(`${BASE_ROUTE}/:id`).patch(
   authenticated(),
-  controller.updateAirport,
+  controller.updateSchedule,
 );
 
 /**
@@ -173,7 +173,7 @@ router.route(`${BASE_ROUTE}/:id`).delete(
  * @openapi
  *
  * paths:
- *   /schedules:
+ *   /schedule:
  *     get:
  *       security:
  *         - bearerAuth: []
@@ -181,16 +181,6 @@ router.route(`${BASE_ROUTE}/:id`).delete(
  *         - Schedule
  *       summary: Read schedules
  *       description: Reads schedules.
- *      parameters:
- *         - name: id
- *           in: path
- *           description: Schedule Id
- *           required: true
- *           schema:
- *             type: string
- *           schema:
- *             type: string
- *           example: "scheduleNr,departureTime,ArrivalTime"
  *       responses:
  *         200:
  *           description: schedules read successfully.
@@ -208,7 +198,7 @@ router.route(`${BASE_ROUTE}/:id`).delete(
  *           $ref: "#/components/responses/500"
  */
 
-router.route(`${BASE_ROUTE}/airports`).get(
+router.route(`${BASE_ROUTE}`).get(
   authenticated(),
   controller.getSchedules,
 );
@@ -219,15 +209,15 @@ router.route(`${BASE_ROUTE}/airports`).get(
  * @openapi
  *
  * paths:
- *   /schedule:
+ *   /schedule/{id}:
  *     get:
  *       security:
  *         - bearerAuth: []
  *       tags:
  *         - Schedule
  *       summary: Read Schedule
- *       description: Reads schedule.
- *           parameters:
+ *       description: Reads schedule by id.
+ *       parameters:
  *         - name: id
  *           in: path
  *           description: Schedule Id
@@ -240,13 +230,11 @@ router.route(`${BASE_ROUTE}/airports`).get(
  *           content:
  *             application/json:
  *               schema:
- *                 type: array
- *                 items:
- *                   $ref: "#/components/schemas/Schedule"
- *         400
- *           $ref: "#/components/responses/400"
+ *                 $ref: "#/components/schemas/Schedule"
  *         401:
  *           $ref: "#/components/responses/401"
+ *         404:
+ *           $ref: "#/components/responses/404"
  *         500:
  *           $ref: "#/components/responses/500"
  */

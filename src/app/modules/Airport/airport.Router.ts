@@ -82,7 +82,7 @@ router.route(BASE_ROUTE).post(
  *         content:
  *           application/json:
  *             schema:
- *               properties:
+ *               required:
  *                 - airportName
  *                 - country
  *                 - city
@@ -107,6 +107,7 @@ router.route(BASE_ROUTE).post(
  *         500:
  *           $ref: "#/components/responses/500"
  */
+
 router.route(`${BASE_ROUTE}/:id`).patch(
   authenticated(),
   controller.updateAirport,
@@ -151,12 +152,12 @@ router.route(`${BASE_ROUTE}/:id`).delete(
 );
 
 /**
- * Read airplanes.
+ * Read airports.
  *
  * @openapi
  *
  * paths:
- *   /airports:
+ *   /airport:
  *     get:
  *       security:
  *         - bearerAuth: []
@@ -164,19 +165,9 @@ router.route(`${BASE_ROUTE}/:id`).delete(
  *         - Airport
  *       summary: Read airports
  *       description: Reads airports.
- *      parameters:
- *         - name: id
- *           in: path
- *           description: Airport Id
- *           required: true
- *           schema:
- *             type: string
- *           schema:
- *             type: string
- *           example: "airportName,country,city"
  *       responses:
  *         200:
- *           description: airports read successfully.
+ *           description: Airports read successfully.
  *           content:
  *             application/json:
  *               schema:
@@ -191,7 +182,7 @@ router.route(`${BASE_ROUTE}/:id`).delete(
  *           $ref: "#/components/responses/500"
  */
 
-router.route(`${BASE_ROUTE}/airports`).get(
+router.route(`${BASE_ROUTE}`).get(
   authenticated(),
   controller.getAirports,
 );
@@ -202,7 +193,7 @@ router.route(`${BASE_ROUTE}/airports`).get(
  * @openapi
  *
  * paths:
- *   /airport:
+ *   /airport/{id}:
  *     get:
  *       security:
  *         - bearerAuth: []
@@ -223,13 +214,11 @@ router.route(`${BASE_ROUTE}/airports`).get(
  *           content:
  *             application/json:
  *               schema:
- *                 type: array
- *                 items:
  *                   $ref: "#/components/schemas/Airport"
- *         400
- *           $ref: "#/components/responses/400"
  *         401:
  *           $ref: "#/components/responses/401"
+ *         404:
+ *           $ref: "#/components/responses/404"
  *         500:
  *           $ref: "#/components/responses/500"
  */

@@ -9,7 +9,7 @@ export const createAirplane = async (
   res: express.Response,
   next: express.NextFunction,
 ) => {
-  const existing = await Airplane.find({ airplaneNumber: req.body.airplaneNumber });
+  const existing = await Airplane.findOne({ airplaneNumber: req.body.airplaneNumber });
   if (existing) {
     throw new Error('Airplane exsist');
   }
@@ -19,7 +19,7 @@ export const createAirplane = async (
     airplaneModel: req.body.airplaneModel,
     numberOfSeats: req.body.numberOfSeats,
   });
-  authorization.authorizeWriteRequest({ airplane: req.user });
+  authorization.authorizeWriteRequest(req.user);
   try {
     res.send(airplane);
   } catch (e) {
@@ -31,8 +31,8 @@ export const updateAirplane = async (
   req: express.Request,
   res: express.Response,
 ) => {
-  const airplane = await Airplane.findById(req.body._id);
-  authorization.authorizeWriteRequest({ airplane: req.user });
+  const airplane = await Airplane.findById(req.params.id);
+  authorization.authorizeWriteRequest(req.user);
   if (airplane) {
     airplane.airplaneNumber = req.body.airplaneNumber;
     airplane.airplaneModel = req.body.airplaneModel;
@@ -49,7 +49,7 @@ export const getAirplane = async (
   res: express.Response,
   next: express.NextFunction,
 ) => {
-  const airplane = await Airplane.findById(req.body._id);
+  const airplane = await Airplane.findById(req.params.id);
   if (!airplane) {
     throw new Error('not found');
   }
@@ -81,8 +81,8 @@ export const removeAirplane = async (
   res: express.Response,
   next: express.NextFunction,
 ) => {
-  authorization.authorizeWriteRequest({ airplane: req.user });
-  await Airplane.findByIdAndRemove(req.body._id);
+  authorization.authorizeWriteRequest(req.user);
+  await Airplane.findByIdAndRemove(req.params.id);
   try {
     res.sendStatus(204);
   } catch (e) {

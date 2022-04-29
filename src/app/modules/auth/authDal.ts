@@ -1,8 +1,13 @@
 import { FilterQuery } from 'mongoose';
 import User, { IQuery, IUpdate, IUser } from '../../models/User';
 
-export const findUser = async (query: FilterQuery<IQuery>): Promise<IUser | null> => {
-  const result = await User.findOne({ query });
+// export const findUser = async (query: FilterQuery<IQuery>): Promise<IUser | null> => {
+//   const result = await User.findOne({ query });
+//   return result;
+// };
+
+export const findUser = async ({ query }: any) => {
+  const result = await User.findOne(query);
   return result;
 };
 

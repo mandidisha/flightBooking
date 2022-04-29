@@ -29,7 +29,7 @@ describe(`Test "Airplane" endpoints`, () => {
       .post('/airplane')
       .send(body);
 
-    Chai.expect(response.status).to.equal(204);
+    Chai.expect(response.status).to.equal(201);
   });
 
   it('Test "Patch /airplane/:id"', async () => {

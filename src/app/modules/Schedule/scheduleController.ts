@@ -3,7 +3,7 @@ import * as express from 'express';
 import Schedule, { ISchedule } from '../../models/Schedule';
 import * as authorization from '../../providers/mail/userAuthorization';
 
-export const createAirport = async (
+export const createSchedule = async (
   req: express.Request,
   res: express.Response,
   next: express.NextFunction,
@@ -16,7 +16,7 @@ export const createAirport = async (
     startingAirport: req.body.startingAirport,
     landingAirport: req.body.landingAirport,
   });
-  authorization.authorizeWriteRequest({ schedule: req.user });
+  authorization.authorizeWriteRequest(req.user);
   try {
     res.send(schedule);
   } catch (e) {
@@ -24,12 +24,12 @@ export const createAirport = async (
   }
 };
 
-export const updateAirport = async (
+export const updateSchedule = async (
   req: express.Request,
   res: express.Response,
 ) => {
-  const schedule = await Schedule.findById(req.body._id);
-  authorization.authorizeWriteRequest({ schedule: req.user });
+  const schedule = await Schedule.findById(req.params.id);
+  authorization.authorizeWriteRequest(req.user);
   if (schedule) {
     schedule.scheduleNr = req.body.scheduleNr;
     schedule.departureTime = req.body.departureTime;
@@ -49,8 +49,8 @@ export const removeSchedule = async (
   res: express.Response,
   next: express.NextFunction,
 ) => {
-  await Schedule.findByIdAndRemove(req.body._id);
-  authorization.authorizeWriteRequest({ schedule: req.user });
+  await Schedule.findByIdAndRemove(req.params.id);
+  authorization.authorizeWriteRequest(req.user);
   try {
     res.sendStatus(204);
   } catch (e) {
@@ -76,7 +76,7 @@ export const getSchedule = async (
   res: express.Response,
   next: express.NextFunction,
 ) => {
-  const schedule = await Schedule.findById(req.body._id);
+  const schedule = await Schedule.findById(req.params.id);
   try {
     res.send(schedule);
   } catch (e) {

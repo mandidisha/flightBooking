@@ -29,7 +29,7 @@ export const updateUser = async (
   res: express.Response,
   // eslint-disable-next-line consistent-return
 ) => {
-  const user = await User.findById(req.body._id);
+  const user = await User.findById(req.params.id);
   if (user) {
     user.firstName = req.body.firstName;
     user.lastName = req.body.lastName;
@@ -48,7 +48,7 @@ export const getUserList = async (
   // eslint-disable-next-line consistent-return
 ) => {
   const users = await User.find({});
-  authorization.authorizeWriteRequest({ user: req.user });
+  authorization.authorizeWriteRequest(req.user);
   try {
     res.send(users);
   } catch (e) {

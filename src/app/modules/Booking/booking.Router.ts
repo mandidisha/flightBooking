@@ -26,14 +26,14 @@ const BASE_ROUTE = '/booking';
  *             schema:
  *               required:
  *                 - seatNr
- *                 - user
- *                 - schedule
+ *                 - userId
+ *                 - scheduleId
  *               properties:
  *                 seatNr:
  *                   type: number
- *                 user:
+ *                 userId:
  *                   type: string
- *                 schedule:
+ *                 scheduleId:
  *                   type: string
 
  *       responses:
@@ -64,7 +64,7 @@ router.route(BASE_ROUTE).post(
  * @openapi
  *
  * paths:
- *   /bookings:
+ *   /booking:
  *     get:
  *       security:
  *         - bearerAuth: []
@@ -72,16 +72,6 @@ router.route(BASE_ROUTE).post(
  *         - Booking
  *       summary: Read bookings
  *       description: Reads bookings.
- *      parameters:
- *         - name: id
- *           in: path
- *           description: Booking Id
- *           required: true
- *           schema:
- *             type: string
- *           schema:
- *             type: string
- *           example: "seatNr,user,schedule"
  *       responses:
  *         200:
  *           description: bookings read successfully.
@@ -99,7 +89,7 @@ router.route(BASE_ROUTE).post(
  *           $ref: "#/components/responses/500"
  */
 
-router.route(`${BASE_ROUTE}/bookings`).get(
+router.route(`${BASE_ROUTE}`).get(
   authenticated(),
   controller.getBookings,
 );
@@ -110,7 +100,7 @@ router.route(`${BASE_ROUTE}/bookings`).get(
  * @openapi
  *
  * paths:
- *   /booking:
+ *   /booking/{id}:
  *     get:
  *       security:
  *         - bearerAuth: []
@@ -118,7 +108,7 @@ router.route(`${BASE_ROUTE}/bookings`).get(
  *         - Booking
  *       summary: Read Booking
  *       description: Reads booking.
- *           parameters:
+ *       parameters:
  *         - name: id
  *           in: path
  *           description: Booking Id
@@ -134,16 +124,53 @@ router.route(`${BASE_ROUTE}/bookings`).get(
  *                 type: array
  *                 items:
  *                   $ref: "#/components/schemas/Booking"
- *         400
- *           $ref: "#/components/responses/400"
  *         401:
  *           $ref: "#/components/responses/401"
+ *         404:
+ *           $ref: "#/components/responses/404"
  *         500:
  *           $ref: "#/components/responses/500"
  */
 router.route(`${BASE_ROUTE}/:id`).get(
   authenticated(),
   controller.getBooking,
+);
+/**
+ * Delete booking.
+ *
+ * @openapi
+ *
+ * paths:
+ *   /booking/{id}:
+ *     delete:
+ *       security:
+ *         - bearerAuth: []
+ *       tags:
+ *         - Booking
+ *       summary: Delete booking
+ *       description: Deletes an existing booking.
+ *       parameters:
+ *         - name: id
+ *           in: path
+ *           description: Booking Id
+ *           required: true
+ *           schema:
+ *             type: string
+ *       responses:
+ *         204:
+ *           description: Booking deleted successfully.
+ *         401:
+ *           $ref: "#/components/responses/401"
+ *         403:
+ *           $ref: "#/components/responses/403"
+ *         404:
+ *           $ref: "#/components/responses/404"
+ *         500:
+ *           $ref: "#/components/responses/500"
+ */
+router.route(`${BASE_ROUTE}/:id`).delete(
+  authenticated(),
+  controller.removeBooking,
 );
 
 export const bookingRouter = router;

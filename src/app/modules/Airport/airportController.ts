@@ -8,7 +8,8 @@ export const createAirport = async (
   res: express.Response,
   next: express.NextFunction,
 ) => {
-  const existing = await Airport.find({ airportName: req.body.airportName });
+  authorization.authorizeWriteRequest(req.user);
+  const existing = await Airport.findOne({ airportName: req.body.airportName });
   if (existing) {
     throw new Error('Airport exsist');
   }
@@ -17,7 +18,6 @@ export const createAirport = async (
     country: req.body.country,
     city: req.body.city,
   });
-  authorization.authorizeWriteRequest({ airport: req.user });
   try {
     res.send(airport);
   } catch (e) {
@@ -29,8 +29,8 @@ export const updateAirport = async (
   req: express.Request,
   res: express.Response,
 ) => {
-  const airport = await Airport.findById(req.body._id);
-  authorization.authorizeWriteRequest({ airport: req.user });
+  const airport = await Airport.findById(req.params.id);
+  authorization.authorizeWriteRequest(req.user);
   if (airport) {
     airport.airportName = req.body.airportName;
     airport.country = req.body.country;
@@ -47,7 +47,7 @@ export const removeAirport = async (
   res: express.Response,
   next: express.NextFunction,
 ) => {
-  await Airport.findByIdAndRemove(req.body._id);
+  await Airport.findByIdAndRemove(req.params.id);
   try {
     res.sendStatus(204);
   } catch (e) {

@@ -10,11 +10,11 @@ import { scheduleRouter } from '../modules/Schedule/schedule.Router';
 
 const router = Router();
 
-// router.use(userRouter);
-// router.use(airplaneRouter);
-// router.use(airportRouter);
+router.use(userRouter);
+router.use(airplaneRouter);
+router.use(airportRouter);
 router.use(authRouter);
-// router.use(bookingRouter);
-// router.use(scheduleRouter);
+router.use(bookingRouter);
+router.use(scheduleRouter);
 
 export default router;

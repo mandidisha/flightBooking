@@ -17,7 +17,7 @@ const BASE_ROUTE = '/airplane';
  *       security:
  *         - bearerAuth: []
  *       tags:
- *         - Airport
+ *         - Airplane
  *       summary: Create airplane (Admin only)
  *       description: Adds a new airplane.
  *       requestBody:
@@ -29,11 +29,11 @@ const BASE_ROUTE = '/airplane';
  *                 - airplaneModel
  *                 - numberOfSeats
  *               properties:
- *                 airportName:
+ *                 airplaneNumber:
  *                   type: number
- *                 country:
+ *                 airplaneModel:
  *                   type: string
- *                 city:
+ *                 numberOfSeats:
  *                   type: number
  *       responses:
  *         201:
@@ -87,11 +87,11 @@ router.route(BASE_ROUTE).post(
  *                 - airplaneModel
  *                 - numberOfSeats
  *               properties:
- *                 airportName:
+ *                 airplaneNumber:
  *                   type: number
- *                 country:
+ *                 airplaneModel:
  *                   type: string
- *                 city:
+ *                 numberOfSeats:
  *                   type: number
  *       responses:
  *         204:
@@ -111,21 +111,21 @@ router.route(`${BASE_ROUTE}/:id`).patch(
   authenticated(),
   controller.updateAirplane,
 );
-
 /**
  * Read airplane.
  *
  * @openapi
  *
  * paths:
- *   /airplane:
+ *   /airplane/{id}:
  *     get:
  *       security:
  *         - bearerAuth: []
  *       tags:
  *         - Airplane
  *       summary: Read airplane
- *           parameters:
+ *       description: Reads airplane.
+ *       parameters:
  *         - name: id
  *           in: path
  *           description: Airplane Id
@@ -138,13 +138,11 @@ router.route(`${BASE_ROUTE}/:id`).patch(
  *           content:
  *             application/json:
  *               schema:
- *                 type: array
- *                 items:
- *                   $ref: "#/components/schemas/Airplane"
- *         400
- *           $ref: "#/components/responses/400"
+ *                 $ref: "#/components/schemas/Airplane"
  *         401:
  *           $ref: "#/components/responses/401"
+ *         404:
+ *           $ref: "#/components/responses/404"
  *         500:
  *           $ref: "#/components/responses/500"
  */
@@ -160,7 +158,7 @@ router.route(`${BASE_ROUTE}/:id`).get(
  * @openapi
  *
  * paths:
- *   /airplanes:
+ *   /airplane:
  *     get:
  *       security:
  *         - bearerAuth: []
@@ -168,16 +166,6 @@ router.route(`${BASE_ROUTE}/:id`).get(
  *         - Airplane
  *       summary: Read airplanes
  *       description: Reads airplanes.
- *      parameters:
- *         - name: id
- *           in: path
- *           description: Airplane Id
- *           required: true
- *           schema:
- *             type: string
- *           schema:
- *             type: string
- *           example: "airplaneNumber,airplaneModel,numberOfSeats"
  *       responses:
  *         200:
  *           description: Airplanes read successfully.
@@ -195,7 +183,7 @@ router.route(`${BASE_ROUTE}/:id`).get(
  *           $ref: "#/components/responses/500"
  */
 
-router.route(`${BASE_ROUTE}/airplanes`).get(
+router.route(`${BASE_ROUTE}`).get(
   authenticated(),
   controller.getAirplanes,
 );

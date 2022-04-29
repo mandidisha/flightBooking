@@ -16,7 +16,7 @@ const BASE_ROUTE = '/user';
  *       security:
  *         - bearerAuth: []
  *       tags:
- *         - Users
+ *         - User
  *       summary: Read user
  *       description: Reads one user by Id.
  *       parameters:
@@ -57,7 +57,7 @@ router.route(`${BASE_ROUTE}/:id`).get(
  *       security:
  *         - bearerAuth: []
  *       tags:
- *         - Users
+ *         - User
  *       summary: Update user
  *       description: Updates an existing user.
  *       parameters:
@@ -71,17 +71,18 @@ router.route(`${BASE_ROUTE}/:id`).get(
  *         content:
  *           application/json:
  *             schema:
+ *               required:
+ *                 - firstName
+ *                 - lastName
+ *                 - gender
  *               properties:
  *                 firstName:
  *                   type: string
  *                 lastName:
  *                   type: string
- *                 genres:
- *                   type: array
- *                   minItems: 1
- *                   items:
- *                     type: string
- *       responses:
+ *                 gender:
+ *                   type: string
+*       responses:
  *         204:
  *           description: User updated successfully.
  *         400:
@@ -92,59 +93,28 @@ router.route(`${BASE_ROUTE}/:id`).get(
  *           $ref: "#/components/responses/403"
  *         404:
  *           $ref: "#/components/responses/404"
- *         422:
- *           description: Unprocessable Entity
- *           content:
- *             application/json:
- *               schema:
- *                 $ref: "#/components/schemas/Error"
- *               examples:
- *                 userExists:
- *                   value:
- *                     code: ckgjkxvgl000431pp4xlpew2g
- *                     name: Unprocessable Entity
-eslint-disable-next-line max-len
- *                     message: Your request was understood but could not be completed due to semantic errors
- *                     details: An user with the same name already exists
- *                   summary: User exists
  *         500:
  *           $ref: "#/components/responses/500"
  */
-
 router.route(`${BASE_ROUTE}/:id`).patch(
   authenticated(),
   controller.updateUser,
 );
 
 /**
- * Read authors.
+ * Read users.
  *
  * @openapi
  *
  * paths:
- *   /userList:
+ *   /user:
  *     get:
- *       security:
+*       security:
  *         - bearerAuth: []
  *       tags:
- *         - Authors
+ *         - User
  *       summary: Read users
- *       description: Reads users. Supports search by genre and projected responses.
- *       parameters:
- *         - name: genre
- *           in: query
- *           description: Genre
- *           required: false
- *           schema:
- *             type: string
- *           example: "dystopian_fiction"
- *         - name: fields
- *           in: query
- *           description: Projected fields
- *           required: false
- *           schema:
- *             type: string
- *           example: "firstName,lastName,genres"
+ *       description: Reads users.
  *       responses:
  *         200:
  *           description: Users read successfully.
@@ -161,7 +131,8 @@ router.route(`${BASE_ROUTE}/:id`).patch(
  *         500:
  *           $ref: "#/components/responses/500"
  */
-router.route(`${BASE_ROUTE}/userList`).get(
+
+router.route(`${BASE_ROUTE}`).get(
   authenticated(),
   controller.getUserList,
 );

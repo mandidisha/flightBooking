@@ -1,3 +1,4 @@
+/* eslint-disable no-shadow */
 /* eslint-disable import/prefer-default-export */
 import * as express from 'express';
 import Booking, { IBooking } from '../../models/Booking';
@@ -8,16 +9,24 @@ export const createBooking = async (
   res: express.Response,
   next: express.NextFunction,
 ) => {
-  const existing = await Booking.find({ user: req.body.airportName });
-  if (existing) {
-    throw new Error('booking exsist');
+  const existingUser = await Booking.findOne({ userId: req.body.userId });
+  if (existingUser) {
+    throw new Error('user exsist');
+  }
+  const existingSeatNr = await Booking.findOne({ seatNr: req.body.seatNr });
+  if (existingSeatNr) {
+    throw new Error('SeatNr exsist');
+  }
+  const existingSchedule = await Booking.findOne({ scheduleId: req.body.scheduleId });
+  if (existingSchedule) {
+    throw new Error('Schedule exsist');
   }
   const booking: IBooking = await Booking.create({
     seatNr: req.body.seatNr,
-    user: req.body.user,
-    schedule: req.body.schedule,
+    userId: req.body.userId,
+    scheduleId: req.body.scheduleId,
   });
-  authorization.authorizeWriteRequest({ booking: req.user });
+  authorization.authorizeWriteRequest(req.user);
   try {
     res.send(booking);
   } catch (e) {
@@ -31,7 +40,7 @@ export const getBookings = async (
   next: express.NextFunction,
 ) => {
   const bookings = await Booking.find({});
-  authorization.authorizeWriteRequest({ bookings: req.user });
+  authorization.authorizeWriteRequest(req.user);
   if (!bookings) {
     throw new Error('bookings not found');
   }
@@ -53,6 +62,18 @@ export const getBooking = async (
   }
   try {
     res.send(booking);
+  } catch (e) {
+    next(e);
+  }
+};
+export const removeBooking = async (
+  req: express.Request,
+  res: express.Response,
+  next: express.NextFunction,
+) => {
+  await Booking.findByIdAndRemove(req.params.id);
+  try {
+    res.sendStatus(204);
   } catch (e) {
     next(e);
   }

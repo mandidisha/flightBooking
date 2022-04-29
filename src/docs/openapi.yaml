@@ -12,7 +12,7 @@ servers:
       port:
         default: "8000"
       base_path:
-        default: "api/v1"
+        default: "api"
 
 paths:
   /health:
