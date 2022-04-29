@@ -1,9 +1,11 @@
+/* eslint-disable import/prefer-default-export */
+/* eslint-disable max-len */
 import { Router } from 'express';
 import { authenticated } from '../../authentication/jwt';
 import * as controller from './authController';
 
 const router = Router();
-const BASE_ROUTE = 'localhost:8000/auth';
+const BASE_ROUTE = '/auth';
 /**
  * User registration.
  *
@@ -25,7 +27,6 @@ const BASE_ROUTE = 'localhost:8000/auth';
  *                 - password
  *                 - firstName
  *                 - lastName
- *                 - redirectUrl
  *               properties:
  *                 email:
  *                   type: string
@@ -62,6 +63,7 @@ const BASE_ROUTE = 'localhost:8000/auth';
  *         500:
  *           $ref: "#/components/responses/500"
  */
+// eslint-disable-next-line no-template-curly-in-string
 router.route(`${BASE_ROUTE}/register`).post(
   controller.registerUser,
 );
@@ -130,13 +132,15 @@ router.route(`${BASE_ROUTE}/resend-confirmation-email`).post(
  *         - Authentication
  *       summary: Confirm account
  *       description: Sets user confirmation level to "confirmed"
- *       parameters:
- *         - name: token
- *           in: query
- *           description: User confirmation token
- *           required: true
- *           schema:
- *             type: string
+ *       requestBody:
+ *         content:
+ *           application/json:
+ *             schema:
+ *               required:
+ *                 - confirmationToken
+ *               properties:
+ *                 confirmationToken:
+ *                   type: string
  *       responses:
  *         204:
  *           description: Account confirmed successfully.
@@ -347,7 +351,7 @@ router.route(`${BASE_ROUTE}/password`).post(
  *       tags:
  *         - Authentication
  *       summary: Initialize two-factor authentication
- *       description: Generates a QR code and returns it to the client.
+ *       description: Two-factor authentication becomes active.
  *       responses:
  *         200:
  *           description: QR Code generated successfully.
@@ -380,6 +384,7 @@ router.route(`${BASE_ROUTE}/two-factor-auth/initialization`).put(
 /**
  * Finalize the setup for the two factor authentication.
  *
+ *
  * @openapi
  *
  * paths:
@@ -390,8 +395,7 @@ router.route(`${BASE_ROUTE}/two-factor-auth/initialization`).put(
  *       tags:
  *         - Authentication
  *       summary: Activate two-factor authentication
- *       description: Receives a token from the user and validates it.
- * If the token is valid, the two-factor authentication becomes active.
+ *       description: Receives a token from the user and validates it. If the token is valid, the two-factor authentication becomes active.
  *       requestBody:
  *         content:
  *           application/json:
@@ -430,7 +434,7 @@ router.route(`${BASE_ROUTE}/two-factor-auth/initialization`).put(
  *                     code: ckgjkxvgl000431pp4xlpew2g
  *                     name: Unprocessable Entity
  *                     message: Your request was understood
- *                     but could not be completed due to semantic errors
+ *                      but could not be completed due to semantic errors
  *                     details: Two-factor authentication is not enabled for your account
  *                   summary: No two-factor-auth enabled
  *                 invalidToken:
@@ -441,9 +445,10 @@ router.route(`${BASE_ROUTE}/two-factor-auth/initialization`).put(
  *                      but could not be completed due to semantic errors
  *                     details: The provided token is not valid
  *                   summary: Invalid token
- *         500:
+ *                 500:
  *           $ref: "#/components/responses/500"
  */
+
 router.route(`${BASE_ROUTE}/two-factor-auth/activation`).put(
   authenticated(),
   controller.completeTwoFactorAuthentication,

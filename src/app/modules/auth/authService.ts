@@ -16,12 +16,14 @@ import { NotAuthenticated, NotFound, UnprocessableEntity } from '../../utils/err
 
 export const registerUser = async (requestBody: IRegistration) => {
   validator.validateUserSignUpRequest(requestBody);
-  const query = {
-    email: requestBody.email.toLowerCase(),
-  };
-  const userWithTheSameEmail = await dal.findUser(
-    query,
-  );
+  // const query = {
+  //   email: requestBody.email.toLowerCase(),
+  // };
+  const userWithTheSameEmail = await dal.findUser({
+    query: {
+      email: requestBody.email.toLowerCase(),
+    },
+  });
   if (userWithTheSameEmail) {
     throw new Error(errors.DUPLICATE_EMAILS);
   }
@@ -36,7 +38,7 @@ export const registerUser = async (requestBody: IRegistration) => {
     confirmationToken: Crypto.randomBytes(32).toString('hex'),
     confirmationLevel: confirmationLevels.PENDING,
     // token: createToken(requestBody),
-    isAdmin: false,
+    isAdmin: true,
     twoFactorAuth: { active: false },
   };
   const createdUser = await dal.createUser(newUserBody);
@@ -44,7 +46,7 @@ export const registerUser = async (requestBody: IRegistration) => {
     user: createdUser,
     redirectUrl: requestBody.redirectUrl,
   });
-  console.log(createdUser);
+  console.log('CREAATTED USSSERRRR', createdUser);
   return createdUser;
 };
 
@@ -80,7 +82,7 @@ export const confirmAccount = async (requestBody: IRegistration) => {
 
   const query = {
     confirmationLevel: confirmationLevels.PENDING,
-    confirmationToken: requestBody.token,
+    confirmationToken: requestBody.confirmationToken,
   };
   const update = {
     confirmationToken: Crypto.randomBytes(32).toString('hex'),
@@ -92,6 +94,7 @@ export const confirmAccount = async (requestBody: IRegistration) => {
   );
 
   if (!updatedUser) {
+    console.log('confirmatio TOOOOKKEN', Error);
     throw new Error(errors.USER_NOT_FOUND_OR_ACCOUNT_CONFIRMED);
   }
 
@@ -107,7 +110,7 @@ export const logIn = async (requestBody: IUser) => {
   await checkIfPasswordsMatch(user!.password, requestBody.password);
   checkIfUserAccountIsNotConfirmed(requestBody.confirmationLevel);
 
-  const sessionToken = createToken(requestBody);
+  const sessionToken = createToken(user!);
   const userWithToken = {
     ...user!.toJSON(),
     token: sessionToken,
@@ -115,9 +118,6 @@ export const logIn = async (requestBody: IUser) => {
 
   // delete userWithToken.password;
   delete userWithToken.twoFactorAuth.secret;
-  // if (user?.twoFactorAuth.active) {
-  //   return {twoFactorAuth} : true)
-  // } else
   return userWithToken;
 };
 
@@ -198,7 +198,7 @@ export const initTwoFactorAuthentication = async (userId: string) => {
   return qrCodeBase64;
 };
 
-export const completeTwoFactorAuthentication = async (userId: IUser, requestBody: IRegistration) => {
+export const completeTwoFactorAuthentication = async (userId: string, requestBody: IRegistration) => {
   validator.validateCompleteTwoFactorAuthRequest(requestBody);
 
   const { token } = requestBody;
@@ -216,7 +216,7 @@ export const completeTwoFactorAuthentication = async (userId: IUser, requestBody
   );
 };
 
-function checkIfTwoFactorAuthIsEnabled(user: any | null) {
+function checkIfTwoFactorAuthIsEnabled(user: IUser | null) {
   if (!user!.twoFactorAuth.secret) {
     throw new UnprocessableEntity(errors.NO_2FA);
   }

@@ -6,8 +6,10 @@ export const registerUser = async (
   res: express.Response,
   next: express.NextFunction,
 ) => {
+  console.log('register  boyd', req.body);
   try {
     await service.registerUser(req.body);
+    res.sendStatus(204);
   } catch (e) {
     next(e);
   }
@@ -45,8 +47,9 @@ export const logIn = async (
   next: express.NextFunction,
 ) => {
   try {
-    await service.logIn(req.body);
-    res.sendStatus(204);
+    const result = await service.logIn(req.body);
+
+    res.status(200).json(result);
   } catch (e) {
     next(e);
   }
@@ -99,12 +102,12 @@ export const completeTwoFactorAuthentication = async (
   next: express.NextFunction,
 ) => {
   try {
-    await service.completeTwoFactorAuthentication(
+    const result = await service.completeTwoFactorAuthentication(
       // eslint-disable-next-line no-underscore-dangle
       req.body._id,
       req.body,
     );
-    res.sendStatus(200);
+    res.status(200).send(result);
   } catch (e) {
     next(e);
   }

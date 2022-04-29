@@ -10,9 +10,9 @@ servers:
     description: Local development server
     variables:
       port:
-        default: "5000"
+        default: "8000"
       base_path:
-        default: "api/v1"
+        default: "api"
 
 paths:
   /health:

@@ -22,7 +22,7 @@ export interface IUser extends Document {
   twoFactorAuth: ITwoFactor;
   isAdmin: boolean;
   gender: string;
-  confirmationToken: boolean;
+  confirmationToken: string;
   confirmationLevel: number;
   secret: string;
 }
@@ -60,6 +60,12 @@ export interface IQuery extends Document {
   lastName: string;
   gender: string;
 }
+export interface IProfile {
+  email: string;
+  firstName: string;
+  lastName: string;
+  gender: string;
+}
 
 export const UserSchema: Schema = new Schema(
   {
@@ -83,8 +89,8 @@ export const UserSchema: Schema = new Schema(
       },
     },
     isAdmin: { type: Boolean, required: true },
-    gender: { type: String, required: true },
-    confirmationToken: { type: Boolean, required: true },
+    gender: { type: String },
+    confirmationToken: { type: String, required: true },
     confirmationLevel: { type: Number, required: true },
     secret: {
       type: {
@@ -98,6 +104,7 @@ export const UserSchema: Schema = new Schema(
   },
   {
     timestamps: true,
+    collection: dbTables.USER,
   },
 );
 

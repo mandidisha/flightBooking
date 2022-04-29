@@ -16,8 +16,8 @@ export const ScheduleSchema: Schema = new Schema(
     departure: { type: Date },
     arrival: { type: Date },
     ticketPrice: { type: Number },
-    startingAirport: [{ type: Schema.Types.ObjectId, ref: dbTables.AIRPORT }],
-    landingAirport: [{ type: Schema.Types.ObjectId, ref: dbTables.AIRPORT }],
+    startingAirport: { type: String },
+    landingAirport: { type: String },
   },
 );
 

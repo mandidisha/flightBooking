@@ -4,11 +4,11 @@ import InlineCss from 'inline-css';
 import { sendEmail } from '../../providers/mail/sendgrid';
 import { getRedirectUrl } from '../../helpers/urlUtils';
 // eslint-disable-next-line import/prefer-default-export
-export const sendConfirmationEmail = async ({ user, redirectUrl }:any) => {
+export const sendConfirmationEmail = async ({ user, redirectUrl }: any) => {
   const confirmationURL = getRedirectUrl(redirectUrl, `token=${user.confirmationToken}`);
   const name = user.firstName;
   const emailContent = await Ejs.renderFile(
-    Path.resolve(__dirname, '../templatesMail/accountConfirmation'),
+    Path.resolve(__dirname, '../../templatesMail/accountConfirmation.ejs'),
     {
       user: name || '',
       confirmationLink: confirmationURL,
@@ -25,7 +25,7 @@ export const sendConfirmationEmail = async ({ user, redirectUrl }:any) => {
   });
 };
 
-export const sendEmailWithResetPasswordLink = async ({ user, redirectUrl }:any) => {
+export const sendEmailWithResetPasswordLink = async ({ user, redirectUrl }: any) => {
   const emailContent = await Ejs.renderFile(
     Path.resolve(__dirname, '../../../templates/mail/reset_password_instructions.ejs'),
     {

@@ -14,7 +14,8 @@ export const validateUserSignUpRequest = (input: IRegistration) => {
   const result = schema.validate(input);
 
   if (result.error) {
-    throw new Error('error');
+    console.log(result.error);
+    throw new Error('validatio error');
   }
 };
 
@@ -30,14 +31,15 @@ export const validateResendConfirmationEmailRequest = (input: IRegistration) => 
   }
 };
 
-export const validateConfirmAccountRequest = (input:IRegistration) => {
+export const validateConfirmAccountRequest = (input: IRegistration) => {
   const schema = Joi.object().keys({
-    token: Joi.string().required(),
+    confirmationToken: Joi.string().required(),
   });
 
   const result = schema.validate(input);
 
   if (result.error) {
+    console.log('CONFIRMATONNNNN', result.error);
     throw new Error('Account error');
   }
 };

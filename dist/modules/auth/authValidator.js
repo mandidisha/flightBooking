@@ -5,7 +5,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.validateVerifyTwoFactorAuthTokenRequest = exports.validateCompleteTwoFactorAuthRequest = exports.validatePasswordUpdateRequest = exports.validateResetPasswordRequest = exports.validateLogInRequest = exports.validateConfirmAccountRequest = exports.validateResendConfirmationEmailRequest = exports.validateUserSignUpRequest = void 0;
 const joi_1 = __importDefault(require("joi"));
-const validation_1 = require("../providers/validation");
+const validation_1 = require("../../providers/validation");
 const validateUserSignUpRequest = (input) => {
     const schema = joi_1.default.object().keys({
         email: joi_1.default.string().email().required(),

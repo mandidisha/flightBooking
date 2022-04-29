@@ -1,58 +1,50 @@
 import bodyParser from 'body-parser';
-// import Path from 'path';
-// import YAML from 'yamljs';
+import Path from 'path';
+import YAML from 'yamljs';
 import SwaggerUI from 'swagger-ui-express';
-// import SwaggerJsdoc from 'swagger-jsdoc';
+import SwaggerJsdoc from 'swagger-jsdoc';
 import express from 'express';
 import mongoose from 'mongoose';
-import Passport from 'passport';
-import Http from 'http';
-import { jwtAuth } from './authentication';
+// import Http from 'http';
+import Cors from 'cors';
 import config from './providers/development';
+import router from './routes/index';
+import { authenticated } from './authentication/jwt';
 
 const app = express();
-// const port = 8000
-const server = Http.createServer(app);
 
+// const server = Http.createServer(app);
 mongoose.connect(config.databaseUrl, {
   directConnection: true,
 });
-
-app.get('/', (req: express.Request, res: express.Response) => {
-  res.send(req.body);
-});
-// Setup docs
-// const docsFilePath = Path.resolve(__dirname, '../docs/openapi.yaml');
-// const jsonDocsFile = YAML.load(docsFilePath);
-// const docs = SwaggerJsdoc({
-//   swaggerDefinition: jsonDocsFile,
-//   apis: ['./src/app/**/*.js'],
-// });
-
-// app.use(
-//   '/api/swagger',
-//   basicAuth(config.apiDocsUsername, config.apiDocsPassword!, true),
-//   SwaggerUI.serve,
-//   SwaggerUI.setup(docs, false!, { docExpansion: 'none' }),
-// );
-
-app.use(
-  '/docs',
-  SwaggerUI.serve,
-  SwaggerUI.setup(undefined, {
-    swaggerOptions: {
-      url: '/swagger.json',
-    },
-  }),
-);
-
-app.get('/help', (req: express.Request, res: express.Response) => {
-  res.send('help page');
-});
-jwtAuth();
+app.use(express.json());
+app.use(express.urlencoded({ limit: '10mb', extended: false }));
+app.use(Cors());
+authenticated();
 app.use(bodyParser.json());
 
-app.use(Passport.initialize());
-server.listen(config.port, () => console.log(`app running on port ${config.port}`));
+app.use('/api', router);
 
-export default server;
+const docsFilePath = Path.resolve(__dirname, '../docs/openapi.yaml');
+const jsonDocsFile = YAML.load(docsFilePath);
+const docs = SwaggerJsdoc({
+  swaggerDefinition: jsonDocsFile,
+  apis: ['./src/app/**/*.ts'],
+});
+app.use(
+  '/api/swagger',
+  SwaggerUI.serve,
+  SwaggerUI.setup(docs),
+);
+// Catch all unhandled errors and log them
+process.on('unhandledRejection', (reason) => {
+  throw reason;
+});
+
+process.on('uncaughtException', (error) => {
+  console.log('+++', error);
+});
+
+app.listen(config.port, () => console.log(`app running on port ${config.port}`));
+
+export default app;
